@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Container } from 'react-bootstrap';
 import NavbarComponent from './components/Navbar';
 import Funcionarios from './pages/funcionarios/Funcionarios';
-import FormularioUsuarios from './pages/funcionarios/FormularioUsuarios';
+import FormularioFuncionarios from './pages/funcionarios/FormularioFuncionarios';
 import Pacientes from './pages/pacientes/Pacientes';
 import FormularioPacientes from './pages/pacientes/FormularioPacientes';
 import Consultas from './pages/consultas/Consultas';
@@ -36,17 +36,21 @@ const App = () => {
       <Container className="mt-3">
         <Routes>
           <Route path="/home" element={<Home/>}/>
+          <Route path="/" element={<Home/>}/>
 
           <Route
-            path="/usuarios"
-            element={<Funcionarios funcionarios={funcionarios} setUsuarios={setFuncionarios} sincronizarStorage={sincronizarStorage} />}
+            path="/funcionarios"
+            element={<Funcionarios funcionarios={funcionarios} setFuncionarios={setFuncionarios} sincronizarStorage={sincronizarStorage} />}
           />
-
-          {/* 
           <Route
-            path="/usuarios/formulario"
+            path="/funcionarios/formulario/:id"
             element={<FormularioFuncionarios funcionarios={funcionarios} setFuncionarios={setFuncionarios} sincronizarStorage={sincronizarStorage} />}
-          /> */}
+          />
+          
+          <Route
+            path="/funcionarios/formulario"
+            element={<FormularioFuncionarios funcionarios={funcionarios} setFuncionarios={setFuncionarios} sincronizarStorage={sincronizarStorage} />}
+          />
           <Route
             path="/pacientes"
             element={<Pacientes pacientes={pacientes} setPacientes={setPacientes} sincronizarStorage={sincronizarStorage} />}
@@ -63,21 +67,23 @@ const App = () => {
           
           <Route
             path="/consultas"
-            element={<Consultas consultas={consultas} setConsultas={setConsultas} sincronizarStorage={sincronizarStorage} />}
+            element={<Consultas consultas={consultas} pacientes={pacientes} funcionarios={funcionarios} setConsultas={setConsultas} sincronizarStorage={sincronizarStorage} />}
           />
           <Route
             path="/consultas/formulario"
-            element={<FormularioConsultas consultas={consultas} setConsultas={setConsultas} sincronizarStorage={sincronizarStorage} />}
+            element={<FormularioConsultas consultas={consultas} pacientes={pacientes} funcionarios={funcionarios} setConsultas={setConsultas} sincronizarStorage={sincronizarStorage} />}
           />
 
           <Route
             path="/consultas/formulario/:id"
-            element={<FormularioConsultas consultas={consultas} setConsultas={setConsultas} sincronizarStorage={sincronizarStorage} />}
+            element={<FormularioConsultas consultas={consultas}  pacientes={pacientes} funcionarios={funcionarios} setConsultas={setConsultas} sincronizarStorage={sincronizarStorage} />}
           />
         </Routes>
       </Container>
     </Router>
   );
 };
+
+
 
 export default App;

@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Form, Button, Alert } from 'react-bootstrap';
 import { useEffect } from 'react';
+import InputMask from 'react-input-mask'
 
-const FormularioConsultas = ({ consultas, setConsultas, sincronizarStorage }) => {
+const FormularioConsultas = ({ consultas, pacientes, funcionarios, setConsultas, sincronizarStorage }) => {
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -14,7 +15,7 @@ const FormularioConsultas = ({ consultas, setConsultas, sincronizarStorage }) =>
     data_hora_consulta: '',
     data_agendamento: '',
     motivo: '',
-    status: '1'
+    status: 'Agendada'
   });
 
   useEffect(() => {
@@ -36,8 +37,14 @@ const FormularioConsultas = ({ consultas, setConsultas, sincronizarStorage }) =>
 
   // Função para validar o formulário
   const validateForm = () => {
-    if (!form.id_paciente || !form.id_usuario_medico || !form.data_hora_consulta || !form.motivo) {
+    if (!form.id_paciente || !form.id_usuario_medico || !form.data_hora_consulta || !form.data_agendamento || !form.motivo) {
       setError('Todos os campos obrigatórios devem ser preenchidos!');
+      return false;
+    }
+    const dataAgendamentoParts = form.data_agendamento.split('/');
+    const dataAgendamentoDate = new Date(`${dataAgendamentoParts[2]}-${dataAgendamentoParts[1]}-${dataAgendamentoParts[0]}`);
+    if (isNaN(dataAgendamentoDate.getTime())) {
+      setError('Data de agendamento inválida!');
       return false;
     }
     setError('');
@@ -71,17 +78,7 @@ const FormularioConsultas = ({ consultas, setConsultas, sincronizarStorage }) =>
     setConsultas(novasConsultas);
     sincronizarStorage('consultas', novasConsultas); // Sincroniza com o LocalStorage
   }
-    // Limpa o formulário
-    // setForm({
-    //   id_consulta: '',
-    //   id_paciente: '',
-    //   id_usuario_medico: '',
-    //   data_hora_consulta: '',
-    //   data_agendamento: '',
-    //   motivo: '',
-    //   status: '1'
-    // });
-    
+
     navigate('/consultas');
   };
 
@@ -95,25 +92,35 @@ const FormularioConsultas = ({ consultas, setConsultas, sincronizarStorage }) =>
           value={form.id_consulta}
         />
         <Form.Group className="mb-3" controlId="formPaciente">
-          <Form.Label>ID do Paciente</Form.Label>
-          <Form.Control
-            type="text"
+          <Form.Label>Paciente</Form.Label>
+          <Form.Select
             name="id_paciente"
             value={form.id_paciente}
             onChange={handleInputChange}
-            required
-          />
+          >
+            <option value="">Selecione um paciente</option>
+            {pacientes.map(paciente => (
+              <option key={paciente.id_paciente} value={paciente.id_paciente}>
+                {paciente.nome}
+              </option>
+            ))}
+          </Form.Select>
         </Form.Group>
 
         <Form.Group className="mb-3" controlId="formMedico">
-          <Form.Label>ID do Médico</Form.Label>
-          <Form.Control
-            type="text"
+          <Form.Label>Médico</Form.Label>
+          <Form.Select
             name="id_usuario_medico"
             value={form.id_usuario_medico}
             onChange={handleInputChange}
-            required
-          />
+          >
+            <option value="">Selecione um médico</option>
+            {funcionarios.map(funcionario => (
+              <option key={funcionario.id_usuario} value={funcionario.id_usuario}>
+                {funcionario.nome}
+              </option>
+            ))}
+          </Form.Select>
         </Form.Group>
 
         <Form.Group className="mb-3" controlId="formDataHora">
@@ -121,20 +128,31 @@ const FormularioConsultas = ({ consultas, setConsultas, sincronizarStorage }) =>
           <Form.Control
             type="datetime-local"
             name="data_hora_consulta"
+            max="9999-12-31T23:59"
             value={form.data_hora_consulta}
             onChange={handleInputChange}
-            required
+            
           />
         </Form.Group>
 
         <Form.Group className="mb-3" controlId="formDataAgendamento">
           <Form.Label>Data do Agendamento</Form.Label>
-          <Form.Control
-            type="date"
+          <InputMask
+            mask="99/99/9999"
+            placeholder="DD/MM/AAAA"
+            onChange={handleInputChange}
             name="data_agendamento"
             value={form.data_agendamento}
-            onChange={handleInputChange}
-          />
+            required
+        >
+            {(inputProps) => (
+                <Form.Control
+                    {...inputProps}
+                    type="text"
+                    isInvalid={false} // Altere para true para exibir um erro
+                />
+            )}
+        </InputMask>
         </Form.Group>
 
         <Form.Group className="mb-3" controlId="formMotivo">
@@ -144,7 +162,7 @@ const FormularioConsultas = ({ consultas, setConsultas, sincronizarStorage }) =>
             name="motivo"
             value={form.motivo}
             onChange={handleInputChange}
-            required
+            
           />
         </Form.Group>
 
@@ -155,9 +173,9 @@ const FormularioConsultas = ({ consultas, setConsultas, sincronizarStorage }) =>
             value={form.status}
             onChange={handleInputChange}
           >
-            <option value="1">Agendada</option>
-            <option value="2">Cancelada</option>
-            <option value="3">Concluída</option>
+            <option value="Agendada">Agendada</option>
+            <option value="Cancelada">Cancelada</option>
+            <option value="Concluída">Concluída</option>
           </Form.Select>
         </Form.Group>
 

@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom';
 import { Table, Button } from 'react-bootstrap';
 
 const Funcionarios = ({ funcionarios, setFuncionarios, sincronizarStorage }) => {
-  const handleDelete = (cpf) => {
-    const updatedFuncionarios = funcionarios.filter((func) => func.cpf !== cpf);
+  const handleDelete = (id) => {
+    const updatedFuncionarios = funcionarios.filter((func) => func.id_usuario !== id);
     setFuncionarios(updatedFuncionarios);
     sincronizarStorage('funcionarios', updatedFuncionarios);
   };
@@ -18,10 +18,11 @@ const Funcionarios = ({ funcionarios, setFuncionarios, sincronizarStorage }) => 
       <Table striped bordered hover responsive>
         <thead>
           <tr>
+            <th>#</th>
             <th>Nome</th>
-            <th>CPF</th>
-            <th>Telefone</th>
-            <th>Cargo</th>
+            <th>Matricula</th>
+            <th>Função</th>
+            <th>Habilitação</th>
             <th>Ações</th>
           </tr>
         </thead>
@@ -34,22 +35,24 @@ const Funcionarios = ({ funcionarios, setFuncionarios, sincronizarStorage }) => 
             </tr>
           ) : (
             funcionarios.map((funcionario) => (
-              <tr key={funcionario.cpf}>
+              <tr key={funcionario.id_usuario}>
+                <td>{funcionario.id_usuario}</td>
                 <td>{funcionario.nome}</td>
-                <td>{funcionario.cpf}</td>
-                <td>{funcionario.telefone}</td>
-                <td>{funcionario.cargo}</td>
+                <td>{funcionario.matricula}</td>
+                <td>{funcionario.funcao}</td>
+                <td>{funcionario.habilitacao}</td>
                 <td>
-                  <Link
-                    to={`/funcionarios/formulario/${funcionario.cpf}`}
-                    className="btn btn-warning btn-sm me-2"
+                  <Button
+                    as={Link}
+                    to={`/funcionarios/formulario/${funcionario.id_usuario}`}
+                    variant="warning"
                   >
                     Editar
-                  </Link>
+                  </Button>
                   <Button
+                  className='ms-2'
                     variant="danger"
-                    size="sm"
-                    onClick={() => handleDelete(funcionario.cpf)}
+                    onClick={() => handleDelete(funcionario.id_usuario)}
                   >
                     Excluir
                   </Button>
