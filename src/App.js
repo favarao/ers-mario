@@ -8,6 +8,7 @@ import Pacientes from './pages/Pacientes';
 import FormularioPacientes from './pages/FormularioPacientes';
 import Consultas from './pages/Consultas';
 import FormularioConsultas from './pages/FormularioConsultas';
+import Home from './pages/Home';
 
 const App = () => {
   const [usuarios, setUsuarios] = useState([]);
@@ -34,7 +35,7 @@ const App = () => {
       <NavbarComponent />
       <Container className="mt-3">
         <Routes>
-          <Route path="/home" />
+          <Route path="/home" element={<Home/>}/>
           {/* <Route
             path="/usuarios"
             element={<Usuarios usuarios={usuarios} setUsuarios={setUsuarios} sincronizarStorage={sincronizarStorage} />}
@@ -59,6 +60,11 @@ const App = () => {
           />
           <Route
             path="/consultas/formulario"
+            element={<FormularioConsultas consultas={consultas} setConsultas={setConsultas} sincronizarStorage={sincronizarStorage} />}
+          />
+
+          <Route
+            path="/consultas/formulario/:id"
             element={<FormularioConsultas consultas={consultas} setConsultas={setConsultas} sincronizarStorage={sincronizarStorage} />}
           />
         </Routes>

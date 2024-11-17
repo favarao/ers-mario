@@ -1,15 +1,30 @@
 import React, { useState } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import { Form, Button, Alert } from 'react-bootstrap';
+import { useEffect } from 'react';
 
 const FormularioConsultas = ({ consultas, setConsultas, sincronizarStorage }) => {
+  const { id } = useParams();
+  const navigate = useNavigate();
+
   const [form, setForm] = useState({
+    id_consulta: '',
     id_paciente: '',
     id_usuario_medico: '',
     data_hora_consulta: '',
     data_agendamento: '',
     motivo: '',
-    status: 'Agendada'
+    status: '1'
   });
+
+  useEffect(() => {
+    if (id) {
+      const consultaExistente = consultas.find(consulta => consulta.id_consulta === parseInt(id));
+      if (consultaExistente) {
+        setForm(consultaExistente);
+      }
+    }
+  }, [id, consultas]);
 
   const [error, setError] = useState('');
 
@@ -36,30 +51,49 @@ const FormularioConsultas = ({ consultas, setConsultas, sincronizarStorage }) =>
     // Validando o formulário antes de submeter
     if (!validateForm()) return;
 
-    const novaConsulta = {
-      id_consulta: consultas.length + 1, // Gerar um ID único baseado na quantidade de consultas
-      ...form
-    };
+    if (form.id_consulta!== '') {
+      const index = consultas.findIndex(consulta => consulta.id_consulta === form.id_consulta);
+      if (index !== -1) {
+        consultas[index] = form;
+        setConsultas([...consultas]);
+        sincronizarStorage('consultas', consultas);
+      }
+    }
+    else
+    {
+      form.id_consulta = consultas.length+1;
+      const novaConsulta = {
+        ...form
+      };
+
 
     const novasConsultas = [...consultas, novaConsulta];
     setConsultas(novasConsultas);
     sincronizarStorage('consultas', novasConsultas); // Sincroniza com o LocalStorage
-
+  }
     // Limpa o formulário
-    setForm({
-      id_paciente: '',
-      id_usuario_medico: '',
-      data_hora_consulta: '',
-      data_agendamento: '',
-      motivo: '',
-      status: 'Agendada'
-    });
+    // setForm({
+    //   id_consulta: '',
+    //   id_paciente: '',
+    //   id_usuario_medico: '',
+    //   data_hora_consulta: '',
+    //   data_agendamento: '',
+    //   motivo: '',
+    //   status: '1'
+    // });
+    
+    navigate('/consultas');
   };
 
   return (
     <div>
       <h3>Cadastrar Nova Consulta</h3>
       <Form onSubmit={handleSubmit}>
+        <Form.Control
+          type="hidden"
+          name="id_consulta"
+          value={form.id_consulta}
+        />
         <Form.Group className="mb-3" controlId="formPaciente">
           <Form.Label>ID do Paciente</Form.Label>
           <Form.Control
@@ -121,13 +155,13 @@ const FormularioConsultas = ({ consultas, setConsultas, sincronizarStorage }) =>
             value={form.status}
             onChange={handleInputChange}
           >
-            <option value="Agendada">Agendada</option>
-            <option value="Cancelada">Cancelada</option>
-            <option value="Concluída">Concluída</option>
+            <option value="1">Agendada</option>
+            <option value="2">Cancelada</option>
+            <option value="3">Concluída</option>
           </Form.Select>
         </Form.Group>
 
-        {/* {error && <Alert variant="danger">{error}</Alert>} */}
+        {error && <Alert variant="danger">{error}</Alert>}
 
         <Button variant="success" type="submit">
           Salvar
