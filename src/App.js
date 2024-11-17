@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Container } from 'react-bootstrap';
 import NavbarComponent from './components/Navbar';
-import Usuarios from './pages/funcionarios/Usuarios';
+import Funcionarios from './pages/funcionarios/Funcionarios';
 import FormularioUsuarios from './pages/funcionarios/FormularioUsuarios';
 import Pacientes from './pages/pacientes/Pacientes';
 import FormularioPacientes from './pages/pacientes/FormularioPacientes';
@@ -11,16 +11,16 @@ import FormularioConsultas from './pages/consultas/FormularioConsultas';
 import Home from './pages/Home';
 
 const App = () => {
-  const [usuarios, setUsuarios] = useState([]);
+  const [funcionarios, setFuncionarios] = useState([]);
   const [pacientes, setPacientes] = useState([]);
   const [consultas, setConsultas] = useState([]);
 
   // Carregar dados do LocalStorage ao iniciar
   useEffect(() => {
-    const usuariosStorage = JSON.parse(localStorage.getItem('usuarios')) || [];
+    const funcionariosStorage = JSON.parse(localStorage.getItem('funcionarios')) || [];
     const pacientesStorage = JSON.parse(localStorage.getItem('pacientes')) || [];
     const consultasStorage = JSON.parse(localStorage.getItem('consultas')) || [];
-    setUsuarios(usuariosStorage);
+    setFuncionarios(funcionariosStorage);
     setPacientes(pacientesStorage);
     setConsultas(consultasStorage);
   }, []);
@@ -36,13 +36,16 @@ const App = () => {
       <Container className="mt-3">
         <Routes>
           <Route path="/home" element={<Home/>}/>
-          {/* <Route
+
+          <Route
             path="/usuarios"
-            element={<Usuarios usuarios={usuarios} setUsuarios={setUsuarios} sincronizarStorage={sincronizarStorage} />}
+            element={<Funcionarios funcionarios={funcionarios} setUsuarios={setFuncionarios} sincronizarStorage={sincronizarStorage} />}
           />
+
+          {/* 
           <Route
             path="/usuarios/formulario"
-            element={<FormularioUsuarios usuarios={usuarios} setUsuarios={setUsuarios} sincronizarStorage={sincronizarStorage} />}
+            element={<FormularioFuncionarios funcionarios={funcionarios} setFuncionarios={setFuncionarios} sincronizarStorage={sincronizarStorage} />}
           /> */}
           <Route
             path="/pacientes"
