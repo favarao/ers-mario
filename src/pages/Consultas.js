@@ -37,14 +37,14 @@ const Consultas = ({ consultas, setConsultas, sincronizarStorage }) => {
               <td>{consulta.motivo}</td>
               <td>{consulta.status}</td>
               <td>
-                <Button 
+                <Button className=''
                     variant="warning" 
                     as={Link} 
                     to={`/consultas/formulario/${consulta.id_consulta}`}
                 >
                     Editar
-                </Button>{' '}
-                <Button 
+                </Button>
+                <Button className='ms-2'
                   variant="danger" 
                   onClick={() => excluirConsulta(consulta.id_consulta)}
                 >
