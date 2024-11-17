@@ -2,12 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Container } from 'react-bootstrap';
 import NavbarComponent from './components/Navbar';
-import Usuarios from './pages/Usuarios';
-import FormularioUsuarios from './pages/FormularioUsuarios';
-import Pacientes from './pages/Pacientes';
-import FormularioPacientes from './pages/FormularioPacientes';
-import Consultas from './pages/Consultas';
-import FormularioConsultas from './pages/FormularioConsultas';
+import Usuarios from './pages/funcionarios/Usuarios';
+import FormularioUsuarios from './pages/funcionarios/FormularioUsuarios';
+import Pacientes from './pages/pacientes/Pacientes';
+import FormularioPacientes from './pages/pacientes/FormularioPacientes';
+import Consultas from './pages/consultas/Consultas';
+import FormularioConsultas from './pages/consultas/FormularioConsultas';
 
 const App = () => {
   const [usuarios, setUsuarios] = useState([]);
@@ -42,7 +42,7 @@ const App = () => {
           <Route
             path="/usuarios/formulario"
             element={<FormularioUsuarios usuarios={usuarios} setUsuarios={setUsuarios} sincronizarStorage={sincronizarStorage} />}
-          />
+          /> */}
           <Route
             path="/pacientes"
             element={<Pacientes pacientes={pacientes} setPacientes={setPacientes} sincronizarStorage={sincronizarStorage} />}
@@ -50,7 +50,7 @@ const App = () => {
           <Route
             path="/pacientes/formulario"
             element={<FormularioPacientes pacientes={pacientes} setPacientes={setPacientes} sincronizarStorage={sincronizarStorage} />}
-          /> */}
+          />
 
           
           <Route
