@@ -2,16 +2,19 @@ import React from 'react';
 import { Table, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
-const Pacientes = ({ pacientes, setConsultas, sincronizarStorage }) => {
+const Pacientes = ({ pacientes, setPacientes, sincronizarStorage }) => {
   const excluirPaciente = (id) => {
     const novosPacientes = pacientes.filter(paciente => paciente.id_paciente !== id);
-    setConsultas(novosPacientes);
+    setPacientes(novosPacientes);
     sincronizarStorage('pacientes', novosPacientes); // Sincroniza com o LocalStorage
   };
 
   return (
     <div>
       <h3>Lista de Pacientes</h3>
+      <Button className='mt-3 mb-3' variant="primary" as={Link} to="/pacientes/formulario">
+        Novo Paciente
+      </Button>
       <Table striped bordered hover responsive>
         <thead>
           <tr>
@@ -21,10 +24,8 @@ const Pacientes = ({ pacientes, setConsultas, sincronizarStorage }) => {
             <th>Nome</th>
             <th>Sexo</th>
             <th>Data Nasc.</th>
-            <th>Endereço</th>
             <th>Telefone</th>
-            <th>Data Falecimento</th>
-            <th>Motivo Falecimento</th>
+            <th>Endereço</th>
             <th>Ações</th>
           </tr>
         </thead>
@@ -37,10 +38,8 @@ const Pacientes = ({ pacientes, setConsultas, sincronizarStorage }) => {
               <th>{paciente.nome}</th>
               <th>{paciente.sexo}</th>
               <th>{paciente.nasc}</th>
-              <th>{paciente.end}</th>
               <th>{paciente.tel}</th>
-              <th>{paciente.d_falec}</th>
-              <th>{paciente.m_falec}</th>
+              <th>{paciente.end}</th>
               <td>
                 <Button
                   variant="warning"

@@ -52,6 +52,10 @@ const App = () => {
             path="/pacientes/formulario"
             element={<FormularioPacientes pacientes={pacientes} setPacientes={setPacientes} sincronizarStorage={sincronizarStorage} />}
           />
+          <Route
+            path="/pacientes/formulario/:id"
+            element={<FormularioPacientes pacientes={pacientes} setPacientes={setPacientes} sincronizarStorage={sincronizarStorage} />}
+          />
 
           
           <Route
