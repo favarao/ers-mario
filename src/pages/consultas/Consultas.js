@@ -11,11 +11,11 @@ const Consultas = ({ consultas, setConsultas, sincronizarStorage }) => {
   return (
     <div>
       <h3>Lista de Consultas </h3>
-    <Button variant="primary" as={Link} to="/consultas/formulario">
+
+      <Button className='mt-3' variant="primary" as={Link} to="/consultas/formulario">
         Nova Consulta
-    </Button>
-    
-      <Table striped bordered hover responsive>
+      </Button>
+      <Table striped bordered hover responsive className='mt-3'>
         <thead>
           <tr>
             <th>#</th>
@@ -37,15 +37,15 @@ const Consultas = ({ consultas, setConsultas, sincronizarStorage }) => {
               <td>{consulta.motivo}</td>
               <td>{consulta.status}</td>
               <td>
-                <Button className=''
-                    variant="warning" 
-                    as={Link} 
-                    to={`/consultas/formulario/${consulta.id_consulta}`}
+                <Button
+                  variant="warning"
+                  as={Link}
+                  to={`/consultas/formulario/${consulta.id_consulta}`}
                 >
-                    Editar
-                </Button>
-                <Button className='ms-2'
-                  variant="danger" 
+                  Editar
+                </Button>{' '}
+                <Button
+                  variant="danger"
                   onClick={() => excluirConsulta(consulta.id_consulta)}
                 >
                   Excluir
@@ -55,6 +55,7 @@ const Consultas = ({ consultas, setConsultas, sincronizarStorage }) => {
           ))}
         </tbody>
       </Table>
+
     </div>
   );
 };
