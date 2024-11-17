@@ -8,6 +8,7 @@ import Pacientes from './pages/pacientes/Pacientes';
 import FormularioPacientes from './pages/pacientes/FormularioPacientes';
 import Consultas from './pages/consultas/Consultas';
 import FormularioConsultas from './pages/consultas/FormularioConsultas';
+import Home from './pages/Home';
 
 const App = () => {
   const [usuarios, setUsuarios] = useState([]);
